@@ -11,27 +11,37 @@
 |
 */
 
+use App\Task;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
-    $links = \App\Link::all();
-    return view('welcome', ['links' => $links]);
+    $tasks = Task::orderBy('created_at', 'asc')->get();
+
+    return view('tasks', ['tasks' => $tasks]);
 });
 
-Route::get('/submit', function () {
+Route::get('/task', function () {
     return view('submit');
 });
 
-Route::post('/submit', function (Request $request) {
-    $data = $request->validate([
-        'title' => 'required|max:255',
-        'url' => 'required|max:255',
-        'description' => 'required|max:255',
+Route::post('/task', function (Request $request) {
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|max:255'
     ]);
+    if ($validator->fails()) {
+        return redirect('/')
+            ->withInput()
+            ->withErrors($validator);
+    }
+    $task = new Task;
+    $task->name = $request->name;
+    $task->save();
 
-    $link = new App\Link($data);
-    $link->save();
+    return redirect('/');
+});
 
+Route::delete('/task/{task}', function (Task $task) {
+    $task->delete();
     return redirect('/');
 });
 
