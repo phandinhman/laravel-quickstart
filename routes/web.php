@@ -20,6 +20,8 @@ Route::get('/', function () {
     return view('tasks', ['tasks' => $tasks]);
 });
 
+Route::get('/tasks', 'TaskController@index');
+
 Route::get('/task', function () {
     return view('submit');
 });
