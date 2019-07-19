@@ -26,26 +26,9 @@ Route::get('/task', function () {
     return view('submit');
 });
 
-Route::post('/task', function (Request $request) {
-    $validator = Validator::make($request->all(), [
-        'name' => 'required|max:255'
-    ]);
-    if ($validator->fails()) {
-        return redirect('/')
-            ->withInput()
-            ->withErrors($validator);
-    }
-    $task = new Task;
-    $task->name = $request->name;
-    $task->save();
+Route::post('/task', 'TaskController@store');
 
-    return redirect('/');
-});
-
-Route::delete('/task/{task}', function (Task $task) {
-    $task->delete();
-    return redirect('/');
-});
+Route::delete('/task/{task}', 'TaskController@destroy');
 
 Auth::routes();
 
