@@ -19,6 +19,9 @@
                 <div class="col-sm-6">
                     <input type="text" name="name" id="task-name" class="form-control">
                 </div>
+                <div class="col-sm-6">
+                    <input type="date" name="deadline" id="task-deadline" class="form-control">
+                </div>
             </div>
 
             <!-- Add Task Button -->
@@ -75,11 +78,10 @@
                 <table class="table table-striped task-table">
 
                     <thead>
-                        <th>Task</th>
+                        <th>Deadline Today</th>
                         <th>&nbsp;</th>
                     </thead>
 
-                    <!-- Table Body -->
                     <tbody>
                         @foreach ($deadlineToday as $task)
                             <tr>

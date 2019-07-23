@@ -33,10 +33,12 @@ class TaskController extends Controller
     public function store(Request $request) {
         $this->validate($request, [
             'name' => 'required|max:25',
+            'deadline' => 'required|date|after_or_equal:today',
         ]);
 
         $request->user()->tasks()->create([
             'name' => $request->name,
+            'deadline' => Carbon::now()
         ]);
 
         return redirect('/tasks');
