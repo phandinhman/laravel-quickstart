@@ -26,7 +26,8 @@ class TaskController extends Controller
 
     public function index(Request $request) {
         $tasks = $this->tasks->forUser($request->user());
-        return view('tasks.index', ['tasks' => $tasks]);
+        $deadlineToday = $this->tasks->deadlineToday($request->user());
+        return view('tasks.index', ['tasks' => $tasks, 'deadlineToday' => $deadlineToday]);
     }
 
     public function store(Request $request) {
@@ -43,7 +44,7 @@ class TaskController extends Controller
 
     public function destroy(Request $request, Task $task) {
         try {
-            $taskJob = new CreateTasks;
+            $taskJob = new CreateTasks($request->user());
             $this->dispatch($taskJob);
             $this->authorize('destroy', $task);
             $task->delete();

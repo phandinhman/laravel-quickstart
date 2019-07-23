@@ -9,5 +9,10 @@ class TaskRepository
     {
         return $user->tasks()->orderBy('created_at', 'desc')->get();
     }
+
+    public function deadlineToday(User $user)
+    {
+        return $user->tasks()->today();
+    }
 }
 ?>
