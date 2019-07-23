@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\TaskRepository;
 use App\Task;
+use App\Jobs\CreateTasks;
 
 class TaskController extends Controller
 {
@@ -41,8 +42,14 @@ class TaskController extends Controller
     }
 
     public function destroy(Request $request, Task $task) {
-        $this->authorize('destroy', $task);
-        $task->delete();
+        try {
+            $taskJob = new CreateTasks;
+            $this->dispatch($taskJob);
+            $this->authorize('destroy', $task);
+            $task->delete();
+        } catch (Exception $e) {
+            dd($e);
+        }
         return redirect('/tasks');
     }
 }
