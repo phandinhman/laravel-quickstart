@@ -10,7 +10,7 @@ class Task extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'deadline'];
 
     public function user() {
         return $this->belongsTo(User::class);
@@ -18,6 +18,6 @@ class Task extends Model
 
     public function scopeToday($query)
     {
-        return $query->whereDate('deadline', Carbon::today())->format('y-m-d')->get();
+        return $query->whereDate('deadline', Carbon::now())->get();
     }
 }
