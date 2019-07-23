@@ -8,19 +8,22 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Task;
+use App\User;
 
 class CreateTasks implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $user;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user)
     {
+        $this->user = $user;
     }
 
     /**
@@ -30,9 +33,8 @@ class CreateTasks implements ShouldQueue
      */
     public function handle()
     {
-        $task = new Task;
-        $task->name="xxxxxxxxxxxxxx";
-        $task->user_id=1;
-        $task->save();
+        $this->user->tasks()->create([
+            'name' => 'xxxxxxxxxxxxxx'
+        ]);
     }
 }
